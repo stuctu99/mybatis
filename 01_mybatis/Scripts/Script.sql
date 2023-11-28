@@ -1,0 +1,4 @@
+CREATE USER mybatis IDENTIFIED BY mybatis
+DEFAULT TABLESPACE users quota unlimited ON users;
+GRANT RESOURCE, CONNECT TO MYBATIS;
+

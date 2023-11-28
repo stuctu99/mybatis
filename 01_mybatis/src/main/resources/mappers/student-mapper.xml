@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 실행할 sql문, 결과를 저장할 dto에 대한 설정하는 파일 -->
+<mapper namespace="student">
+	<!-- insert문 작성하기 
+		<insert>태그를 이용해서 작성함
+		id : sql문의 이름
+		[parameterType] : 전달받은 java객체 타입 설정(mybatis 타입)
+		
+	-->
+	<insert id="insertStudent" >
+		INSERT INTO STUDENT VALUES(SEQ_STUDENT.NEXTVAL, 
+			'유병승', '01012341234', 'YOO@YOO.COM', '경기도 시흥시', DEFAULT)
+	
+	</insert>
+	<insert id="insertStudentName" parameterType="string">
+		INSERT INTO STUDENT VALUES(SEQ_STUDENT.NEXTVAL, 
+			#{name}, '01012341234', 'YOO@YOO.COM', '경기도 시흥시', DEFAULT)
+	</insert>
+<!-- 
+	객체로 매개변수를 전달했을 때는 값을 가져올 때 #{필드명}으로 가져옴 
+	-> 필드명으로 getter를 찾아서 호출
+ -->
+	<insert id="insertStudentObject" parameterType="com.mybatis.model.dto.Student">
+		INSERT INTO STUDENT VALUES(SEQ_STUDENT.NEXTVAL, 
+			#{studentName}, #{studentTel}, #{studentEmail}, #{studentAddress}, DEFAULT)
+	</insert>
+	
+	<update id="updateStudent" parameterType="com.mybatis.model.dto.Student">
+		UPDATE STUDENT SET STUDENT_NAME = #{studentName}, STUDENT_TEL = #{studentTel} WHERE STUDENT_NO = #{studentNo}
+	</update>
+	
+	<delete id="deleteStudent" parameterType="com.mybatis.model.dto.Student">
+		DELETE STUDENT WHERE STUDENT_NO = #{studentNo}
+	</delete>
+</mapper>

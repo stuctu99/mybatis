@@ -1,0 +1,1 @@
+{"resources":{"Scripts/Script-1.sql":{"default-datasource":"oracle_thin-18c13c35432-4ed3f47ff5b37ecb","default-schema":"MYBATIS"},"Scripts/Script.sql":{"default-schema":"SYSTEM","default-datasource":"oracle_thin-18c13bea829-684365ec3b287d80"}}}
