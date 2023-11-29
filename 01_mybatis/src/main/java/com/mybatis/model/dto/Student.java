@@ -1,5 +1,7 @@
 package com.mybatis.model.dto;
 
+import java.sql.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +17,6 @@ public class Student {
 	private String studentTel;
 	private String studentEmail;
 	private String studentAddress;
-	
+	private Date regDate;
 	
 }

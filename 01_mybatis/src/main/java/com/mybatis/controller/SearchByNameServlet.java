@@ -1,6 +1,7 @@
 package com.mybatis.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,16 +13,16 @@ import com.mybatis.model.dto.Student;
 import com.mybatis.model.service.StudentService;
 
 /**
- * Servlet implementation class InsertStudentServlet
+ * Servlet implementation class SearchByNameServlet
  */
-@WebServlet("/student/insertStudent.do")
-public class InsertStudentServlet extends HttpServlet {
+@WebServlet("/student/searchByName.do")
+public class SearchByNameServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public InsertStudentServlet() {
+    public SearchByNameServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -30,11 +31,15 @@ public class InsertStudentServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int result = new StudentService()
-		.insertStudent(Student.builder().build());
+		request.setCharacterEncoding("utf-8");
 		
-		//response.getWriter().write(result);
-		response.sendRedirect(request.getContextPath());
+		String name = request.getParameter("name");
+		
+		List<Student> students = new StudentService().searchByName(name);
+		
+		request.setAttribute("students", students);
+		
+		request.getRequestDispatcher("/views/student/student.jsp").forward(request, response);
 	}
 
 	/**

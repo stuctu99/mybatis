@@ -12,16 +12,16 @@ import com.mybatis.model.dto.Student;
 import com.mybatis.model.service.StudentService;
 
 /**
- * Servlet implementation class InsertStudentServlet
+ * Servlet implementation class SearchStudentNoServlet
  */
-@WebServlet("/student/insertStudent.do")
-public class InsertStudentServlet extends HttpServlet {
+@WebServlet("/student/searchNo.do")
+public class SearchStudentNoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public InsertStudentServlet() {
+    public SearchStudentNoServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -30,11 +30,15 @@ public class InsertStudentServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int result = new StudentService()
-		.insertStudent(Student.builder().build());
 		
-		//response.getWriter().write(result);
-		response.sendRedirect(request.getContextPath());
+		int no = Integer.parseInt(request.getParameter("no"));
+		
+		Student s = new StudentService().searchStudentByNo(no);
+		
+		
+		request.setAttribute("student", s);
+		
+		request.getRequestDispatcher("/views/student/student.jsp").forward(request, response);
 	}
 
 	/**

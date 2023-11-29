@@ -30,7 +30,86 @@
 		UPDATE STUDENT SET STUDENT_NAME = #{studentName}, STUDENT_TEL = #{studentTel} WHERE STUDENT_NO = #{studentNo}
 	</update>
 	
-	<delete id="deleteStudent" parameterType="com.mybatis.model.dto.Student">
-		DELETE STUDENT WHERE STUDENT_NO = #{studentNo}
+	<delete id="deleteStudent" parameterType="_int">
+		DELETE FROM STUDENT WHERE STUDENT_NO = #{studentNo}
 	</delete>
+	
+	
+	<!-- 
+		select문 실행하기
+		<select>태그 이용
+		반드시 설정하는 속성
+			1. id 속성 : sql문의 이름을 설정
+			2. resultType||resultMap : select문의 결과를 반환할 객체 설정
+				* resultType, resultMap 중 한 개만 설정
+					resultType : java에서 생성한 클래스 자체를 설정할 때 -> 패키지명.클래스명
+					resultMap  : mybatis의 <resultMap> 태그로 생성한 것을 설정할 때  
+			[3. parameterType]
+			
+	 -->
+	
+	<select id="selectStudentCount" resultType="_int">
+		SELECT COUNT (*) FROM STUDENT
+	</select>
+	<!-- resultMap 태그 활용하기
+			DB 데이터와 DTO를 연결해주기 위한 태그.
+			column과 DTO의 필드를 연결해줌
+		<resultMap id="resultMap이름" type="연결할 DTO클래스">
+			<id column="" property=""> : pk컬럼을 매핑할 때 사용하는 태그 
+			<result column="" property=""> : 일반컬럼을 매핑할 때 사용하는 태그
+			클래스에 선언된 has a 관계 객체를 매핑할 때 사용
+			<association column="" ofType=""||resultMap=""> : 일대일 관계에 있는 객체와 매핑할 때 
+			<collection column="" ofType=""||resultMap=""> : 일대다 관계에 있는 객체와 매핑할 때 
+		</resultMap>
+	 -->
+	
+	<resultMap id="studentMap" type="com.mybatis.model.dto.Student">
+		<id column="student_no" property="studentNo"/>
+		<result column="student_name" property="studentName"/>
+		<result column="student_tel" property="studentTel"/>
+		<result column="student_email" property="studentEmail"/>
+		<result column="student_addr" property="studentAddress"/>
+		<result column="reg_date" property="regDate"/>
+	</resultMap>
+	
+	<select id="searchStudentByNo" resultMap="studentMap"
+				parameterType='_int'>
+		<!--  resultType="com.mybatis.model.dto.Student" -->
+	<!-- 	SELECT student_no as studentno,
+				student_name as studentname,
+				student_tel as studenttel,
+				student_email as studentemail,
+				student_addr as studentaddress,
+				reg_date as regdate -->
+		SELECT * 
+		from STUDENT WHERE STUDENT_NO = #{no}
+		<!-- SELECT * FROM STUDENT WHERE STUDENT_NO = #{no} -->
+	</select>
+	
+	<select id="selectStudentAll" resultMap="studentMap">
+		SELECT * FROM STUDENT 
+	</select>
+	
+	<select id="searchByName" resultMap="studentMap" parameterType="string">
+		SELECT * FROM STUDENT WHERE STUDENT_NAME LIKE '%'||#{name}||'%' 
+		<!-- '%${name}%' 이렇게도 가능!-->
+	</select>
+	
+	<select id="searchStudentByNoMap" resultType="map">
+		SELECT * FROM STUDENT
+				WHERE STUDENT_NO = #{no}
+	</select>
+	
+	<select id="searchAllMap" resultType="map">
+		SELECT * FROM STUDENT
+	</select>
+	
+	<insert id="insertMap" parameterType="map">
+		INSERT INTO STUDENT VALUES(SEQ_STUDENT.NEXTVAL, #{name}, #{phone}, #{email}, #{address}, DEFAULT)
+	</insert>
+	
+	<select id="selectStudentPage" resultMap="studentMap">
+<!-- 		SELECT * FROM (SELECT ROWNUM AS RNUM, S.* FROM )	 -->
+		SELECT * FROM STUDENT
+	</select>
 </mapper>

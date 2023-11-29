@@ -14,13 +14,13 @@ import com.mybatis.model.service.StudentService;
  * Servlet implementation class UpdateStudent
  */
 @WebServlet("/student/updateStudent.do")
-public class UpdateStudent extends HttpServlet {
+public class UpdateStudentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UpdateStudent() {
+    public UpdateStudentServlet() {
         super();
         // TODO Auto-generated constructor stub
     }

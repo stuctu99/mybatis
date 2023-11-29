@@ -1,7 +1,6 @@
 package com.mybatis.controller;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,16 +11,16 @@ import com.mybatis.model.dto.Student;
 import com.mybatis.model.service.StudentService;
 
 /**
- * Servlet implementation class InsertStudentServlet
+ * Servlet implementation class InsertStudentObject
  */
-@WebServlet("/student/insertStudent.do")
-public class InsertStudentServlet extends HttpServlet {
+@WebServlet("/student/insertStudentObject.do")
+public class InsertStudentObjectServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public InsertStudentServlet() {
+    public InsertStudentObjectServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -30,11 +29,23 @@ public class InsertStudentServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int result = new StudentService()
-		.insertStudent(Student.builder().build());
+		request.setCharacterEncoding("UTF-8");
+		String name=request.getParameter("name");
+		String phone=request.getParameter("phone");
+		String email=request.getParameter("email");
+		String address=request.getParameter("address");
 		
-		//response.getWriter().write(result);
-		response.sendRedirect(request.getContextPath());
+		Student s = Student.builder()
+								.studentName(name)
+								.studentTel(phone)
+								.studentEmail(email)
+								.studentAddress(address)
+								.build();
+				
+		int result = new StudentService().insertStudentObject(s);
+		
+		response.setContentType("text/html;charset=utf-8");
+		response.getWriter().write(result>0?"<h2>입력성공</h2>":"<h2>입력실패</h2>");
 	}
 
 	/**

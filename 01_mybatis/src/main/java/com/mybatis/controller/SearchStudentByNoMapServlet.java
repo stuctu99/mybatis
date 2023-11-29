@@ -1,6 +1,7 @@
 package com.mybatis.controller;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,20 +9,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.mybatis.model.dto.Student;
 import com.mybatis.model.service.StudentService;
 
 /**
- * Servlet implementation class InsertStudentServlet
+ * Servlet implementation class SearchStudentByNoMapServlet
  */
-@WebServlet("/student/insertStudent.do")
-public class InsertStudentServlet extends HttpServlet {
+@WebServlet("/student/searchByNoMap.do")
+public class SearchStudentByNoMapServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public InsertStudentServlet() {
+    public SearchStudentByNoMapServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -30,11 +30,14 @@ public class InsertStudentServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int result = new StudentService()
-		.insertStudent(Student.builder().build());
+	
+		int no = Integer.parseInt(request.getParameter("no"));
+		Map student = new StudentService().searchStudentByNoMap(no);
 		
-		//response.getWriter().write(result);
-		response.sendRedirect(request.getContextPath());
+		request.setAttribute("student", student);
+		
+		request.getRequestDispatcher("/views/student/studentMap.jsp").forward(request, response);
+	
 	}
 
 	/**

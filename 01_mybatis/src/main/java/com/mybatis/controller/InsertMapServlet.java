@@ -1,6 +1,9 @@
 package com.mybatis.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,16 +14,16 @@ import com.mybatis.model.dto.Student;
 import com.mybatis.model.service.StudentService;
 
 /**
- * Servlet implementation class InsertStudentObject
+ * Servlet implementation class InsertMap
  */
-@WebServlet("/student/insertStudentObject.do")
-public class InsertStudentObject extends HttpServlet {
+@WebServlet("/student/insertMap.do")
+public class InsertMapServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public InsertStudentObject() {
+    public InsertMapServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -29,23 +32,22 @@ public class InsertStudentObject extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
-		String name=request.getParameter("name");
-		String phone=request.getParameter("phone");
-		String email=request.getParameter("email");
-		String address=request.getParameter("address");
 		
-		Student s = Student.builder()
-								.studentName(name)
-								.studentTel(phone)
-								.studentEmail(email)
-								.studentAddress(address)
-								.build();
-				
-		int result = new StudentService().insertStudentObject(s);
+		request.setCharacterEncoding("utf-8");
 		
-		response.setContentType("text/html;charset=utf-8");
-		response.getWriter().write(result>0?"<h2>입력성공</h2>":"<h2>입력실패</h2>");
+		String name = request.getParameter("name");
+		String phone = request.getParameter("phone");
+		String email = request.getParameter("email");
+		String address = request.getParameter("address");
+		
+		Map data = new HashMap<>();
+		data.put("name", name);
+		data.put("phone", phone);
+		data.put("email", email);
+		data.put("address", address);
+		
+		int result = new StudentService().insertMap(data);
+		
 	}
 
 	/**
